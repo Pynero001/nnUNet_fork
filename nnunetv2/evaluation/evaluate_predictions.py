@@ -15,6 +15,8 @@ from nnunetv2.imageio.simpleitk_reader_writer import SimpleITKIO
 # the Evaluator class of the previous nnU-Net was great and all but man was it overengineered. Keep it simple
 from nnunetv2.utilities.json_export import recursive_fix_for_json_export
 from nnunetv2.utilities.plans_handling.plans_handler import PlansManager
+# Adding custom HD95 metrics
+from medpy.metric.binary import hd95
 
 
 def label_or_region_to_key(label_or_region: Union[int, Tuple[int]]):
@@ -116,6 +118,13 @@ def compute_metrics(reference_file: str, prediction_file: str, image_reader_writ
         results['metrics'][r]['TN'] = tn
         results['metrics'][r]['n_pred'] = fp + tp
         results['metrics'][r]['n_ref'] = fn + tp
+        # Computing HD95
+        try:
+            hd95_val = hd95(mask_pred, mask_ref)
+        except Exception:
+            hd95_val = np.nan
+        results['metrics'][r]['HD95'] = hd95_val 
+            
     return results
 
 
