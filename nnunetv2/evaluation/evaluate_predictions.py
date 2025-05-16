@@ -1,3 +1,6 @@
+# Installing MedPy for HD95
+pip install medpy==0.4.0
+
 import multiprocessing
 import os
 from copy import deepcopy
