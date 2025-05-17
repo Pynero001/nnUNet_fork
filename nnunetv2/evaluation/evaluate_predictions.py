@@ -119,11 +119,12 @@ def compute_metrics(reference_file: str, prediction_file: str, image_reader_writ
         results['metrics'][r]['n_pred'] = fp + tp
         results['metrics'][r]['n_ref'] = fn + tp
         # Computing HD95
-        try:
-            hd95_val = hd95(mask_pred, mask_ref)
-        except Exception:
-            hd95_val = np.nan
-        results['metrics'][r]['HD95'] = hd95_val 
+        if mask_ref.sum() != 0 and mask_pred.sum() != 0:
+            try:
+                hd95_val = hd95(mask_pred, mask_ref)
+                results['metrics'][r]['HD95'] = hd95_val
+            except Exception:
+                pass 
             
     return results
 
