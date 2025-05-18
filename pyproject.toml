@@ -53,7 +53,7 @@ dependencies = [
     "batchgeneratorsv2>=0.2",
     "einops",
     "blosc2>=3.0.0b1",
-    "medpy==0.4.0"
+    "medpy==0.5.2"
 ]
 
 [project.urls]
