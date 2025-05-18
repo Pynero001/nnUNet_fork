@@ -126,7 +126,11 @@ def compute_metrics(reference_file: str, prediction_file: str, image_reader_writ
                 results['metrics'][r]['HD'] = hd_val
                 results['metrics'][r]['HD95'] =  hd95_val
             except Exception:
-                pass 
+                results['metrics'][r]['HD'] = np.nan
+                results['metrics'][r]['HD95'] = np.nan
+        else:
+            results['metrics'][r]['HD'] = np.nan
+            results['metrics'][r]['HD95'] = np.nan
             
     return results
 
@@ -165,8 +169,8 @@ def compute_metrics_on_folder(folder_ref: str, folder_pred: str, output_file: st
     for r in regions_or_labels:
         means[r] = {}
         for m in metric_list:
-            means[r][m] = np.nanmean([i['metrics'][r][m] for i in results])
-
+            means[r][m] = np.nanmean([i['metrics'][r].get(m, np.nan) for i in results])
+            
     # foreground mean
     foreground_mean = {}
     for m in metric_list:
